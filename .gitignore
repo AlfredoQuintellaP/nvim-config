@@ -1,0 +1,8 @@
+*.swp
+*.tmp
+*.log
+*.lock
+plugin/
+pack/
+site/
+.cache/

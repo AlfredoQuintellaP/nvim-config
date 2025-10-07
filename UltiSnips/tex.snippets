@@ -1,0 +1,23 @@
+snippet mk "Inline Math Mode" A
+\(${1}\)${2}
+endsnippet
+
+snippet dm "Display Math Mode" A
+\[${1}\]${2}
+endsnippet
+
+snippet fr "Fraction" w
+\frac{${1:num}}{${2:den}}
+endsnippet
+
+snippet seq "Sequence a_n" w
+\{a_{${1:n}}\}_{${1} \in ${2:\mathbb{N}}}
+endsnippet
+
+snippet it "Itemize environment (1 item)" w
+\begin{itemize}
+	\item ${1:item}
+\end{itemize}
+$0
+endsnippet
+

@@ -1,0 +1,117 @@
+\documentclass[notitlepage]{scrbook}
+\KOMAoptions{
+	DIV=12,
+	fontsize=12pt,
+	paper=letter,
+	twoside=false,
+	parskip=half-,
+}
+\usepackage[onehalfspacing, nodisplayskipstretch]{setspace}
+\usepackage{amsmath, amssymb, amsfonts}
+\usepackage{enumitem}
+\setlist{noitemsep}
+\setlist[enumerate]{label={(\alph*)}}
+
+\usepackage[T1]{fontenc}
+\usepackage{mlmodern}  
+\makeatletter
+\input{t1mlmr.fd}
+\makeatother
+\DeclareFontShape{T1}{mlmr}{m}{scit}{<->ssub*mlmr/m/scsl}{}
+
+\usepackage{tikz}
+\usetikzlibrary{arrows, positioning}
+\usepackage{subcaption}
+
+\usepackage{xcolor}
+\usepackage[
+    colorlinks=true,
+    linkcolor=blue!60!black,      % For internal links
+    citecolor=green!70!black,     % For citation links
+    urlcolor=orange!70!black,      % For URLs
+    filecolor=cyan!60!black        % For file links
+]{hyperref}
+
+\usepackage[canadian]{babel}
+\usepackage{csquotes}
+\usepackage[showseconds=false, showzone=false]{datetime2}
+\DTMsettimestyle{en-CA}
+
+\usepackage{amsthm}
+\newtheorem{theorem}{Theorem}[chapter]
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{fact}[theorem]{Fact}
+\newtheorem{proposition}[theorem]{Proposition}
+\newtheorem{corollary}[theorem]{Corollary}
+\theoremstyle{definition}
+\newtheorem{problem}{Problem}
+\newtheorem{question}{Question}
+\newtheorem{definition}[theorem]{Definition}
+\newtheorem{example}[theorem]{Example}
+\newtheorem{remark}[theorem]{Remark}
+
+\newcommand{\vocab}[1]{\textbf{#1}}
+
+\usepackage[mathscr]{eucal}     % For \EuScript
+\usepackage{mathtools}
+\renewcommand{\geq}{\geqslant}
+\renewcommand{\ge}{\geqslant}
+\renewcommand{\leq}{\leqslant}
+\renewcommand{\le}{\leqslant}
+\usepackage{booktabs}
+\usepackage{ytableau}
+\ytableausetup{centertableaux, smalltableaux}
+
+
+\DeclareFontShape{TU}{lmr}{m}{scit}{<->ssub * lmr/m/scsl}{}
+
+\usepackage[style=alphabetic, backend=biber,isbn=false,url=false]{biblatex} 
+\addbibresource{references.bib}
+
+\title{Notes on Real Analysis}
+\author{Alfredo Quintella \\\href{mailto:alfredo.quintella@gmail.com}{\texttt{alfredo.quintella@gmail.com}}}
+% \date{Last updated on \DTMnow.}
+
+\begin{document}
+	\maketitle
+  
+ \vspace{2cm} % Espaçamento opcional
+\begin{flushright}
+    \textit{
+    "Would you tell me, please, which way I ought to go from here?"  
+    \\
+    "That depends a good deal on where you want to get to," said the Cat.  
+    \\
+    "I don't much care where—" said Alice.  
+    \\
+    "Then it doesn't matter which way you go," said the Cat.  
+    \\
+    "—so long as I get somewhere," Alice added as an explanation.  
+    \\
+    "Oh, you're sure to do that," said the Cat, "if you only walk long enough."
+    }
+    \\[1em]
+    \textbf{— Lewis Carroll, \textit{Alice's Adventures in Wonderland}}
+\end{flushright} 
+
+  \newpage
+  This document contains my personal study notes, based on discussions with José Ramon, books, and other materials. These notes were written in LaTeX using a Neovim environment with the Zathura viewer.  
+
+  Any theoretical or formatting errors are my own. If you find any mistakes, feel free to:  
+  \begin{itemize}
+    \item submit a pull request on my GitHub page, or  
+    \item send me an email.  
+  \end{itemize}  
+
+  Any suggestions for example problems to include are also welcome.  
+  
+  \tableofcontents
+
+  % Incluir capítulos
+  % \input{chapters/introduction.tex}
+  % \input{chapters/chapter01.tex}
+  % \input{chapters/chapter02.tex}
+  % \input{chapters/chapter03.tex}
+  % \input{chapters/miscellaneous.tex}
+  \printbibliography
+\end{document}
