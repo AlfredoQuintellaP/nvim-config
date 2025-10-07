@@ -1,6 +1,3 @@
-<<<<<<< HEAD
-# nvim-config
-=======
 # My Neovim Config
 
 It all began because I thought it looked cool, but then I started to realize that Vim motions — and the understanding that Vim/Neovim gave me — were actually really helpful.
@@ -43,4 +40,3 @@ Each plugin has its own config file inside `lua/plugins/`.
 ## Keybindings
 
 Will organize in the future...
->>>>>>> fc75ad4 (first commit: my neovim config)
