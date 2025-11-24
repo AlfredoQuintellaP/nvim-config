@@ -20,8 +20,8 @@ vim.opt.mouse = "a"
 vim.opt.clipboard = "unnamedplus"
 
 -- Enablind line wraper
-vim.opt.wrap = true
-vim.opt.linebreak = true
+vim.opt.wrap = false
+vim.opt.linebreak = false
 
 -- Enabling vertical line, treating initial page case
 vim.api.nvim_create_autocmd("FileType", {
@@ -31,3 +31,10 @@ vim.api.nvim_create_autocmd("FileType", {
     end
   end,
 })
+
+-- Disable backup files to prevent save conflicts
+vim.opt.backup = false
+vim.opt.writebackup = false
+vim.opt.swapfile = false
+
+vim.opt.writeany = true

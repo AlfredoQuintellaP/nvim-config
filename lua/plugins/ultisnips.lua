@@ -1,3 +1,5 @@
+-- ~/.config/nvim/lua/plugins/ultisnips.lua
+
 return {
   "SirVer/ultisnips",
   dependencies = { "honza/vim-snippets" }, -- snippets prontos (LaTeX incluso)
@@ -9,4 +11,3 @@ return {
     vim.g.UltiSnipsSnippetDirectories = { "UltiSnips", "vim-snippets" }
   end,
 }
-
