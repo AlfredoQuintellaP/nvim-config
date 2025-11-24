@@ -3,15 +3,6 @@
 It all began because I thought it looked cool, but then I started to realize that Vim motions — and the understanding that Vim/Neovim gave me — were actually really helpful.
 In the beginning, I used LazyVim and later tried LunarVim for a while, but there were too many features I didn’t even understand, so I decided to create my own configuration.
 
-## Plugins
-
-All plugins are managed by [Lazy.nvim](https://github.com/folke/lazy.nvim).  
-Each plugin has its own config file inside `lua/plugins/`.
-# My Neovim Configuration
-
-It all began because I thought it looked cool, but then I started to realize that Vim motions — and the understanding that Vim/Neovim gave me — were actually really helpful.
-In the beginning, I used LazyVim and later tried LunarVim for a while, but there were too many features I didn’t even understand, so I decided to create my own configuration.
-
 ## Features
 
 - **Plugin Management**: [lazy.nvim](https://github.com/folke/lazy.nvim) for fast and efficient plugin loading
