@@ -38,16 +38,5 @@ return {
       require("toggleterm").exec(cmd, 1, 12, "float")
     end, { desc = "Compilar e rodar C++ no terminal flutuante" })
 
-    -- No seu arquivo de configuração do toggleterm
-    vim.keymap.set("n", "<leader>t", ":ToggleTermSendCurrentLine<CR>", { 
-        desc = "enviar linha atual para terminal",
-        silent = true 
-    })
-
-    vim.keymap.set("v", "<leader>t", ":ToggleTermSendVisualLines<CR>", {
-        desc = "enviar seleção para terminal",
-        silent = true
-    })
-
   end,
 }

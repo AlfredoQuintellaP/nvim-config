@@ -20,30 +20,27 @@ keymap("n", "J", "o<Esc>k")
 keymap("n", "U", "O<Esc>j")
 
 -- Use void register to preserve yank buffer when deleting
-keymap({ "n", "v" }, "d", '"_d')
-keymap("n", "D", '"_D')
-keymap("n", "dd", '"_dd')
-
--- Change delete from visual mode
-keymap('v', 'd', '"_d', { noremap = true, silent = true })
+keymap({ "n", "v" }, "d", '"_d', opts)
+keymap("n", "D", '"_D', opts)
+keymap("n", "dd", '"_dd', opts)
 
 -- Clear search highlighting
 keymap("n", "<Esc>", "<cmd>nohlsearch<CR>", opts)
 
 -- Search for visually selected text
-keymap("v", "<leader>ss", [["zy/\V<C-R>z<CR>]], { noremap = true, silent = true })
+keymap("v", "<leader>ss", [["zy/\V<C-R>z<CR>]], opts)
 
 -- Fast quit/save
-keymap('n', '<leader>w', ':w<CR>', { noremap = true, silent = true })
-keymap('n', '<leader>q', ':confirm bd<CR>', { noremap = true, silent = true })
-keymap("n", "<leader>Q", ":confirm qa<CR>", { noremap = true, silent = true })
+keymap('n', '<leader>w', ':w<CR>', opts)
+keymap('n', '<leader>q', ':confirm bd<CR>', opts)
+keymap("n", "<leader>Q", ":confirm qa<CR>", opts)
 
--- Fast new file command
-keymap("n", "<leader>nf", ":enew<CR>", { noremap = true, silent = true })
+-- New file with name prompt (removed <leader>nf to avoid timeout conflict)
 keymap("n", "<leader>n", ":edit ", { noremap = true })
 
--- Fast terminal open
-keymap('n', '<leader>tt', ':split | terminal<CR>')
+-- Send lines to terminal (toggleterm)
+keymap('n', '<leader>t', ':ToggleTermSendCurrentLine<CR>', { desc = "enviar linha ao terminal", silent = true })
+keymap('v', '<leader>t', ':ToggleTermSendVisualLines<CR>', { desc = "enviar seleção ao terminal", silent = true })
 
 -- Codeforces template command and keymap
 vim.api.nvim_create_user_command('Codeforces', function()
@@ -64,3 +61,4 @@ int main() {
 end, {})
 
 keymap("n", "<leader>cf", ":Codeforces<CR>", { desc = "insert codeforces template" })
+
