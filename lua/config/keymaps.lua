@@ -15,6 +15,12 @@ keymap("v", "K", ":m '<-2<CR>gv=gv")
 -- Replace current word globally
 keymap("n", "<leader>rw", [[:%s/\<<C-r><C-w>\>/<C-r><C-w>/gI<Left><Left><Left>]])
 
+-- Keep cursor centered when scrolling and searching
+keymap("n", "<C-d>", "<C-d>zz", opts)
+keymap("n", "<C-u>", "<C-u>zz", opts)
+keymap("n", "n", "nzzzv", opts)
+keymap("n", "N", "Nzzzv", opts)
+
 -- Add empty line below/above without insert mode
 keymap("n", "J", "o<Esc>k")
 keymap("n", "U", "O<Esc>j")
