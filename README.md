@@ -1,26 +1,19 @@
 # My Neovim Config
 
 It all began because I thought it looked cool, but then I started to realize that Vim motions — and the understanding that Vim/Neovim gave me — were actually really helpful.
-In the beginning, I used LazyVim and later tried LunarVim for a while, but there were too many features I didn’t even understand, so I decided to create my own configuration.
+In the beginning, I used LazyVim and later tried LunarVim for a while, but there were too many features I didn't even understand, so I decided to create my own configuration.
 
 ## Features
 
 - **Plugin Management**: [lazy.nvim](https://github.com/folke/lazy.nvim) for fast and efficient plugin loading
-- **LSP Support**: Full Language Server Protocol integration with Mason for easy management
+- **LSP Support**: Full Language Server Protocol integration with Mason, capabilities wired to nvim-cmp
+- **Autocompletion**: nvim-cmp with LSP, buffer, and path sources
 - **Fuzzy Finding**: Telescope for quick file navigation and searching
-- **LaTeX Support**: Comprehensive LaTeX editing with VimTeX and custom templates
+- **LaTeX Support**: Comprehensive LaTeX editing with VimTeX, Zathura viewer, and custom templates
 - **Syntax Highlighting**: Tree-sitter for accurate and fast syntax highlighting
-- **Terminal Integration**: Integrated terminal with ToggleTerm
-- **Auto-completion**: Smart auto-pairing of brackets and quotes
-
-## Requirements
-
-- Neovim >= 0.10.0
-- Git
-- A [Nerd Font](https://www.nerdfonts.com/) (for icons)
-- Ripgrep (for Telescope live grep)
-- Node.js (for some LSP servers)
-- A C compiler (for Tree-sitter)
+- **Terminal Integration**: ToggleTerm with C-\ toggle and line/selection sending
+- **Snippets**: UltiSnips with custom LaTeX snippets
+- **Auto-pairing**: nvim-autopairs for brackets and quotes
 
 ## Installation
 
@@ -32,7 +25,7 @@ In the beginning, I used LazyVim and later tried LunarVim for a while, but there
 
 2. **Clone this repository:**
    ```bash
-   git clone https://github.com/yourusername/nvim-config.git ~/.config/nvim
+   git clone https://github.com/AlfredoQuintella/nvim-config.git ~/.config/nvim
    ```
 
 3. **Start Neovim:**
@@ -41,179 +34,208 @@ In the beginning, I used LazyVim and later tried LunarVim for a while, but there
    ```
    Lazy.nvim will automatically install all plugins on first launch.
 
-4. **Install LSP servers:**
-   After plugins are installed, open Mason:
+4. **LSP servers are installed automatically** via Mason on first launch. You can also manage them manually:
    ```vim
    :Mason
    ```
-   The configured language servers will be automatically installed.
 
 ## Structure
 
 ```
 ~/.config/nvim/
-├── init.lua                  # Main entry point
-├── lazy-lock.json           # Plugin version lock file
+├── init.lua                      # Entry point: loads options, plugins, keymaps, latex templates
+├── lazy-lock.json                # Plugin version lock file (commit this)
 ├── lua/
 │   ├── config/
-│   │   ├── options.lua      # Neovim options and settings
-│   │   ├── keymaps.lua      # Custom keybindings
-│   │   └── latex_templates.lua  # LaTeX template management
-│   ├── lazy_setup.lua       # Lazy.nvim plugin manager setup
-│   └── plugins/             # Individual plugin configurations
-│       ├── masonlsp.lua     # LSP configuration with Mason
-│       ├── telescope.lua    # Fuzzy finder configuration
-│       ├── treesitter.lua   # Syntax highlighting
-│       ├── vimtex.lua       # LaTeX support
-│       ├── autopairs.lua    # Auto-pair brackets
-│       ├── toggleterm.lua   # Terminal integration
-│       ├── tokyonight.lua   # Color scheme
-│       └── ultisnips.lua    # Snippet engine
-├── latex-templates/         # Custom LaTeX templates
-│   ├── main-article.tex
-│   ├── chapter-article.tex
-│   └── free_writing.tex
-└── UltiSnips/              # Custom snippets
-    └── tex.snippets        # LaTeX snippets
+│   │   ├── options.lua           # Editor options (numbers, indent, clipboard, etc.)
+│   │   ├── keymaps.lua           # All custom keybindings
+│   │   └── latex_templates.lua   # Auto-prompt template on new .tex file
+│   ├── lazy_setup.lua            # Bootstraps and configures lazy.nvim
+│   └── plugins/
+│       ├── masonlsp.lua          # Mason + LSP servers + diagnostics config
+│       ├── cmp.lua               # nvim-cmp autocompletion
+│       ├── telescope.lua         # Fuzzy finder
+│       ├── treesitter.lua        # Syntax highlighting
+│       ├── vimtex.lua            # LaTeX support
+│       ├── autopairs.lua         # Auto-close brackets
+│       ├── toggleterm.lua        # Terminal integration + C++ runner
+│       ├── tokyonight.lua        # Color scheme
+│       └── ultisnips.lua         # Snippet engine
+├── latex-templates/
+│   ├── main-article.tex          # Full article template (KOMA-script)
+│   ├── chapter-article.tex       # Chapter skeleton
+│   └── free_writing.tex          # Blank template
+└── UltiSnips/
+    └── tex.snippets              # Custom LaTeX snippets
 ```
 
-## Core Configuration
+## Key Mappings
 
-### Options (lua/config/options.lua)
+**Leader key**: `Space`
 
-- **Leader key**: Space
-- **Line numbers**: Enabled with relative numbers
-- **Indentation**: 4 spaces (spaces, not tabs)
-- **Mouse**: Enabled for all modes
-- **Clipboard**: Synced with system clipboard
-- **Line wrap**: Disabled for cleaner code viewing
-- **Color column**: Vertical line at column 90 (except on startup screen)
-- **No swap/backup files**: Clean working directory, no annoying backup files
-- **Write protection**: Disabled to allow direct file overwriting
+All keymaps listed here are active in normal mode unless noted otherwise.
+LSP keymaps are buffer-local — they only activate when a language server is attached.
 
-### Language Support
+---
 
-Configured LSP servers via Mason:
-
-- **Python**: Pyright
-- **C/C++**: clangd
-- **LaTeX**: texlab
-- **Julia**: julials
-- **R**: r_language_server
-
-### Key Mappings
-
-**Leader Key**: `Space`
-
-#### General Keybindings
+### Navigation
 
 | Key | Action |
 |-----|--------|
-| `<leader><leader>` | Open file search (Telescope) |
+| `<C-d>` | Scroll half page down (cursor stays centered) |
+| `<C-u>` | Scroll half page up (cursor stays centered) |
+| `n` | Next search result (cursor stays centered) |
+| `N` | Previous search result (cursor stays centered) |
+
+---
+
+### Files & Buffers
+
+| Key | Action |
+|-----|--------|
+| `<leader><leader>` | Find files (Telescope) |
+| `<leader>ff` | Find files (Telescope) |
+| `<leader>fg` | Live grep across project |
+| `<leader>fb` | Browse open buffers |
+| `<leader>fh` | Search help tags |
+| `<leader>n` | Open/create file by name (`:edit` prompt) |
 | `<leader>w` | Save file |
-| `<leader>q` | Close current buffer |
-| `<leader>Q` | Quit all |
-| `<leader>nf` | Create new empty file |
-| `<leader>n` | Create new file (with name prompt) |
-| `<leader>tt` | Open terminal in split |
-| `<leader>rw` | Replace current word globally |
-| `<leader>ss` | Search for visually selected text |
-| `<Esc>` | Clear search highlighting |
+| `<leader>q` | Close current buffer (confirms if unsaved) |
+| `<leader>Q` | Quit all (confirms if unsaved) |
 
-#### Visual Mode
+---
 
-| Key | Action |
-|-----|--------|
-| `<` | Indent left (stay in visual mode) |
-| `>` | Indent right (stay in visual mode) |
-| `J` | Move selected lines down |
-| `K` | Move selected lines up |
-| `d` | Delete without yanking |
+### Editing
 
-#### Normal Mode Enhancements
+| Key | Mode | Action |
+|-----|------|--------|
+| `J` | Normal | Insert empty line below without entering insert mode |
+| `U` | Normal | Insert empty line above without entering insert mode |
+| `d` / `D` / `dd` | Normal | Delete to void register (preserves yank buffer) |
+| `d` | Visual | Delete to void register (preserves yank buffer) |
+| `<` | Visual | Indent left (stays in visual mode) |
+| `>` | Visual | Indent right (stays in visual mode) |
+| `J` | Visual | Move selected lines down |
+| `K` | Visual | Move selected lines up |
+| `<leader>rw` | Normal | Replace word under cursor globally (interactive) |
+| `<leader>ss` | Visual | Search for visually selected text |
+| `<Esc>` | Normal | Clear search highlighting |
 
-| Key | Action |
-|-----|--------|
-| `J` | Add empty line below |
-| `U` | Add empty line above |
-| `d`, `D`, `dd` | Delete without yanking (preserves yank buffer) |
+---
 
-#### LSP Keybindings
+### Terminal
+
+| Key | Mode | Action |
+|-----|------|--------|
+| `<C-\>` | Normal / Terminal | Toggle terminal (float) |
+| `<leader>t` | Normal | Send current line to terminal |
+| `<leader>t` | Visual | Send selected lines to terminal |
+| `<F5>` | Normal | Compile and run current C++ file (float terminal) |
+
+---
+
+### LSP (active when a language server is attached)
 
 | Key | Action |
 |-----|--------|
 | `gd` | Go to definition |
 | `gD` | Go to declaration |
-| `gr` | Show references |
+| `gr` | Show all references |
 | `gi` | Go to implementation |
 | `K` | Hover documentation |
 | `<leader>rn` | Rename symbol |
 | `<leader>ca` | Code actions |
 | `<leader>f` | Format document |
+| `<leader>d` | Show diagnostics float for current line |
+| `[d` | Go to previous diagnostic |
+| `]d` | Go to next diagnostic |
 
-#### Competitive Programming
+---
+
+### Autocompletion (nvim-cmp, active in insert mode)
 
 | Key | Action |
 |-----|--------|
-| `<leader>cf` | Insert Codeforces template |
+| `<C-n>` | Select next suggestion |
+| `<C-p>` | Select previous suggestion |
+| `<C-y>` | Confirm selected suggestion |
+| `<C-Space>` | Manually trigger completion popup |
+| `<C-d>` | Scroll down in suggestion documentation |
+| `<C-u>` | Scroll up in suggestion documentation |
 
-## Plugins
+---
 
-### Essential Plugins
+### LaTeX (active only in `.tex` files)
 
-- **[lazy.nvim](https://github.com/folke/lazy.nvim)**: Plugin manager
-- **[mason.nvim](https://github.com/williamboman/mason.nvim)**: LSP server installer
-- **[nvim-treesitter](https://github.com/nvim-treesitter/nvim-treesitter)**: Advanced syntax highlighting
-- **[telescope.nvim](https://github.com/nvim-telescope/telescope.nvim)**: Fuzzy finder
-- **[tokyonight.nvim](https://github.com/folke/tokyonight.nvim)**: Color scheme
+| Key | Action |
+|-----|--------|
+| `<leader>tc` | Start/stop continuous compilation (VimTeX) |
+| `<leader>tv` | Compile and open PDF in Zathura |
+| `<leader>tC` | Clean auxiliary files |
+| `<localleader>ll` | VimTeX: compile |
+| `<localleader>lv` | VimTeX: view PDF |
+| `<localleader>le` | VimTeX: show errors |
+| `<localleader>lc` | VimTeX: clean |
 
-### Writing & Development
+#### UltiSnips (insert mode, LaTeX files)
 
-- **[vimtex](https://github.com/lervag/vimtex)**: LaTeX editing
-- **[UltiSnips](https://github.com/SirVer/ultisnips)**: Snippet engine
-- **[nvim-autopairs](https://github.com/windwp/nvim-autopairs)**: Auto-close brackets
-- **[toggleterm.nvim](https://github.com/akinsho/toggleterm.nvim)**: Terminal toggle
+| Trigger | Snippet |
+|---------|---------|
+| `mk` | Inline math `\( ... \)` (auto) |
+| `dm` | Display math `\[ ... \]` (auto) |
+| `fr` | Fraction `\frac{num}{den}` |
+| `seq` | Sequence `\{a_n\}_{n \in \mathbb{N}}` |
+| `it` | Itemize environment |
+| `<Tab>` | Expand snippet |
+| `<C-j>` | Jump to next snippet placeholder |
+| `<C-k>` | Jump to previous snippet placeholder |
+
+---
+
+### Competitive Programming
+
+| Key | Action |
+|-----|--------|
+| `<leader>cf` | Insert Codeforces C++ template with current timestamp |
+| `<F5>` | Compile with `g++` and run in float terminal |
+
+---
+
+## Language Support
+
+LSP servers are installed and managed automatically via Mason:
+
+| Language | Server | Notes |
+|----------|--------|-------|
+| Python | `pyright` | Type checking disabled (off) |
+| C / C++ | `clangd` | Background indexing enabled |
+| LaTeX | `texlab` | Works alongside VimTeX |
+| Julia | `julials` | Requires Julia installed |
+| R | `r_language_server` | Requires `languageserver` R package |
 
 ## LaTeX Workflow
 
-This configuration includes custom LaTeX templates accessible via commands:
+When you create a new `.tex` file, a template picker appears automatically. Templates live in `latex-templates/` and can be customized freely.
 
-- `:LoadMainArticle` - Load main article template
-- `:LoadChapterArticle` - Load chapter article template
-- `:LoadFreeWriting` - Load free writing template
+Available templates:
+- `main-article` — Full KOMA-script article with math packages, biblatex, and theorem environments
+- `chapter-article` — Minimal chapter/section skeleton
+- `free_writing` — Blank file
 
-Templates are stored in `latex-templates/` and can be customized.
+Compilation is handled by VimTeX with Zathura as the PDF viewer. Use `<leader>tc` to toggle continuous compilation — it recompiles on every save automatically.
 
-## Things I like
+## Plugins
 
-1. **Open a project:**
-   ```bash
-   cd your-project
-   nvim .
-   ```
-
-2. **Find files quickly:**
-   Press `<leader><leader>` (Space twice) to open Telescope file finder
-
-3. **LSP features:**
-   - Hover over any function/variable and press `K` for documentation
-   - Use `gd` to jump to definitions
-   - Use `<leader>ca` for code actions (imports, fixes, etc.)
-   - Use `<leader>f` to format the current file
-
-4. **Terminal:**
-   Press `<leader>tt` to open a terminal in a split window
-
-5. **Efficient editing:**
-   - Use `J` and `U` to add blank lines without entering insert mode
-   - Use `d` to delete without affecting your yank buffer
-   - Select text in visual mode and use `J`/`K` to move lines up/down
-
-6. **Quick file operations:**
-   - `<leader>w` to save
-   - `<leader>q` to close current buffer
-   - `<leader>nf` to create a new empty file
-
-7. **Competitive programming:**
-   - Open a new C++ file
-   - Press `<leader>cf` to insert the Codeforces template
+| Plugin | Purpose |
+|--------|---------|
+| [lazy.nvim](https://github.com/folke/lazy.nvim) | Plugin manager |
+| [mason.nvim](https://github.com/williamboman/mason.nvim) | LSP server installer |
+| [nvim-lspconfig](https://github.com/neovim/nvim-lspconfig) | LSP client configuration |
+| [nvim-cmp](https://github.com/hrsh7th/nvim-cmp) | Autocompletion engine |
+| [nvim-treesitter](https://github.com/nvim-treesitter/nvim-treesitter) | Syntax highlighting |
+| [telescope.nvim](https://github.com/nvim-telescope/telescope.nvim) | Fuzzy finder |
+| [vimtex](https://github.com/lervag/vimtex) | LaTeX editing |
+| [UltiSnips](https://github.com/SirVer/ultisnips) | Snippet engine |
+| [nvim-autopairs](https://github.com/windwp/nvim-autopairs) | Auto-close brackets |
+| [toggleterm.nvim](https://github.com/akinsho/toggleterm.nvim) | Terminal integration |
+| [tokyonight.nvim](https://github.com/folke/tokyonight.nvim) | Color scheme |
